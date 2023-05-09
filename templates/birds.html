@@ -1,0 +1,87 @@
+
+{% include 'jumbotron.html' %}
+
+{% extends 'bootstrap/base.html' %}
+
+{% block content %}
+
+<style>
+    .search-form {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .gcse-search{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .centeredBox{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding-top: 10px;
+    }
+
+    .container{
+        padding-top: 30px;
+    }
+</style>
+<div class="s2">
+
+
+<div class="container">
+    <div class="centeredBox">
+        <p>Learn more about the bird! Look up the bird below!</p>
+    </div>
+    <script async src="https://cse.google.com/cse.js?cx=e34956f4123bb447e">
+    </script>
+    <div class="gcse-search" data-searchType="image"></div>
+</div>
+</div>
+<div class="s1">
+    <div class="container">
+        <input type="hidden" name="page" value="hotspots">
+        {% if birds %}
+            <div class="panel panel-default">
+                <div class="panel-body">
+                
+                    <h3>{{birds[1][0][0]}}</h3>
+                    <p>Species Code: {{birds[1][0][1]}}</p>
+                    <p>Category: {{birds[1][0][2]}}</p>
+                    <p>Taxonomic Order:{{birds[1][0][3]}}</p>
+                    <p>Order: {{birds[1][0][4]}}</p>
+                    <p>Family Common Name: {{birds[1][0][5]}}</p>
+                    <p>Family Scientific Name: {{birds[1][0][6]}}</p>
+                </div>
+            </div>
+        {% else %}
+            <p>Bird not found... Did you pick an existing bird?</p>
+        {% endif %}
+
+    </div>
+</div>
+
+<script>
+    function submitSearchForm() {
+        var q = document.getElementById('gsc-i-id1').value;
+        window.location.href = '{{ request.path }}?search=' + q;
+    }
+
+    function renderSearchResults() {
+        if (document.readyState === 'complete') {
+            var query = new URLSearchParams(window.location.search).get('search');
+            if (query) {
+                var searchBox = document.getElementById('gsc-i-id1');
+                searchBox.value = query;
+                var searchForm = document.getElementsByClassName('search-form')[0];
+                searchForm.action = '{{ request.path }}?search=' + query;
+            }
+        }
+    }
+
+    window.onload = renderSearchResults;
+</script>
+{% endblock %}

@@ -1,0 +1,56 @@
+
+{% include 'jumbotron.html' %}
+
+{% extends 'bootstrap/base.html' %}
+
+{% block content %}
+
+<style>
+    .search-form {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .container{
+        padding-top: 30px;
+    }
+   
+</style>
+<div class="s2">
+    <div class="container">
+        <form class="search-form" method="GET" action="{{ request.path }}">
+            <div class="form-group">
+                <input type="text" class="form-control" name="search" placeholder="Search through results" value="{{ search }}">
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-default">Submit</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="s1">
+    <div class="container">
+        <input type="hidden" name="page" value="hotspots">
+        {% if birds %}
+            {% for bird in birds %}
+                {% if search.lower() in bird[0][0].lower() or search.lower() in bird[5][0].lower()%}
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <h3>{{bird[0][0]}}</h3>
+                            <p>Latitude: {{bird[1][0]}}</p>
+                            <p>Longitude: {{bird[2][0]}}</p>
+                            <p>Species Code: {{bird[3]}}</p>
+                            <p>Observed Date: {{bird[4][0]}}</p>
+                            <p>Location: {{bird[5][0]}}</p>
+                            <a href="/{{hotspot_id}}/{{bird[6]}}/" class="btn btn-primary">Learn more</a>
+                        </div> 
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+
+    </div>
+</div>
+
+{% endblock %}

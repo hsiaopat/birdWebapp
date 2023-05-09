@@ -1,0 +1,85 @@
+{% include 'jumbotron.html' %}
+
+{% extends 'bootstrap/base.html' %}
+
+{% block content %} 
+
+<head>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<style>
+    .search-form {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #map-container {
+        height: 500px;
+        margin-bottom: 20px;
+    }
+
+    #map {
+        height: 100%;
+        width: 100%;
+    }
+    .container{
+        padding-top: 30px;
+    }
+
+    /* Define a new class to hide the map */
+    .hide {
+        display: none;
+    }
+</style>
+<div class="s2">
+    <div class="container-fluid">
+        <!-- Add the 'hide' class to initially hide the map -->
+        <div id="map-container" class="hide">
+            <iframe id="map" src=""></iframe>
+        </div>
+
+        <div class="container">
+            <form class="search-form" method="GET" action="{{ request.path }}">
+                <div class="form-group">
+                    <input type="text" class="form-control" name="query" placeholder="Search Location" value="{{ query }}">
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-default">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>    
+</div>
+
+<div class="s1">
+    <div class="container">
+        <input type="hidden" name="page" value="hotspots">
+        {% if sightings %}
+            {% for sighting in sightings %}
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <p>Address: {{ sighting[0] }}</p>
+                        <p>Latitude: {{ sighting[1] }}</p>
+                        <p>Longitude: {{ sighting[2] }}</p>
+                        <p>Number of Species: {{ sighting[3] }}</p>
+                        <a href="/{{sighting[4]}}/" class="btn btn-primary">Sighting</a>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+</div>
+
+<script>
+    $(document).ready(function() {
+        if("{{query}}"){
+            /* If a search query has been submitted, remove the 'hide' class from the map container */
+            $("#map-container").removeClass("hide");
+            /* Set the source of the map iframe using the search query */
+            $("#map").attr("src", "https://www.google.com/maps/embed/v1/search?key=AIzaSyDKYxD04RjCDP3A5xLgLNZnkpXVDPM__1g&q={{ query }}");
+        }
+    });
+</script>
+{% endblock %}
+
