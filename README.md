@@ -6,8 +6,10 @@ To run:
 clone this repo locally!
 
 In your terminal:
->> export FLASK_APP=bird_api.py
->> python3 -m flask run -p <port number> -h 0.0.0.0
+
+> export FLASK_APP=bird_api.py
+
+> python3 -m flask run -p <port number> -h 0.0.0.0
   
 Enjoy!
 
